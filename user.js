@@ -18,30 +18,32 @@ Note, disabled Flash - use Livestreamer + Live Streamer GUI.
 So, no better privacy. Could also nuke all local data on browser close.
 */
 
-// Some addons just suck and we have to add these manually once
+// Some addons just suck and we may have to add these manually once
 
 // Feedbar
-user_pref("extensions.feedbar.notify", false)
+user_pref("extensions.feedbar.notify", false);
 
 // Mouseless Browsing
-user_pref("mouselessbrowsing.idChars", "TNSERIAO")
-user_pref("mouselessbrowsing.idType", "CHAR")
-user_pref("mouselessbrowsing.keys.clearKeybuffer", "0")
-user_pref("mouselessbrowsing.keys.historyBack", "1234")
-user_pref("mouselessbrowsing.keys.historyForward", "3010")
-user_pref("mouselessbrowsing.keys.openInNewTabPostfixKey", "576")
-user_pref("mouselessbrowsing.keys.openInNewWindowPostfixKey", "560")
-user_pref("mouselessbrowsing.showIdsOnDemand", true)
-user_pref("mouselessbrowsing.keys.updatePage", "3041")
+user_pref("mouselessbrowsing.executeAutomaticNew", false);
+user_pref("mouselessbrowsing.keys.toggleAllIds", "1762");
+user_pref("mouselessbrowsing.idChars", "TNSERIAO");
+user_pref("mouselessbrowsing.idType", "CHAR");
+user_pref("mouselessbrowsing.keys.clearKeybuffer", "0");
+user_pref("mouselessbrowsing.keys.historyBack", "1234");
+user_pref("mouselessbrowsing.keys.historyForward", "3010");
+user_pref("mouselessbrowsing.keys.openInNewTabPostfixKey", "576");
+user_pref("mouselessbrowsing.keys.openInNewWindowPostfixKey", "560");
+user_pref("mouselessbrowsing.keys.updatePage", "3041");
+user_pref("mouselessbrowsing.showIdsOnDemand", true);
 
 // NoScript
-user_pref("noscript.keys.toggle", "alt n")
-user_pref("noscript.keys.ui", "alt shift n")
 //user_pref("noscript.autoAllow", 1)
-user_pref("noscript.confirmUnblock", false)
-user_pref("noscript.confirmUnsafeReload", false)
-user_pref("noscript.notify", false)
-user_pref("noscript.notify.bottom", false)
+user_pref("noscript.confirmUnblock", false);
+user_pref("noscript.confirmUnsafeReload", false);
+user_pref("noscript.keys.toggle", "alt n");
+user_pref("noscript.keys.ui", "alt shift n");
+user_pref("noscript.notify", false);
+user_pref("noscript.notify.bottom", false);
 
 
 /******************************************************************************
