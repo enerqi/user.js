@@ -49,7 +49,14 @@ See [issue #14](https://github.com/pyllyukko/user.js/issues/14) for further deta
 
 ### Windows
 
+```
+cd /path/to/user.js/
+mklink /H user.js %HOME%\%appdata%\Roaming\Mozilla\Firefox\Profiles\XXXXXXXX.secure
+```
+
 On Windows, you need to drop the ```user.js``` file to ```%appdata%\Mozilla\Firefox\Profiles\XXXXXXXX.your_profile_name```.
+
+Apply any manual addon settings that don't load from user.js nor sync.
 
 What does it do?
 ----------------
@@ -58,7 +65,7 @@ There's a whole lot of settings that this modifies and they are divided in the f
 
 * HTML5 / [APIs](https://wiki.mozilla.org/WebAPI) / DOM
 * Miscellaneous
-* Extensios / plugins related
+* Extensions / plugins related
 * Firefox (anti-)[features](https://en.wikipedia.org/wiki/Feature_creep) / components
 * [Automatic connections](https://support.mozilla.org/en-US/kb/how-stop-firefox-making-automatic-connections)
 * HTTP protocol related

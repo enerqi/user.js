@@ -2,6 +2,47 @@
  * user.js                                                                    *
  * https://github.com/pyllyukko/user.js                                       *
  ******************************************************************************/
+/* Addons
+Calomel SSL Validation (purely for UI SSL level visibility)
+Flagfox
+HTTPS-Everywhere
+NoScript
+Privacy Badger
+Random Agent Spoofer
+Self-Destructing Cookies
+uBlock Origin
+
++ Whatever Non-Privacy Related ones
+
+Note, disabled Flash - use Livestreamer + Live Streamer GUI.
+So, no better privacy. Could also nuke all local data on browser close.
+*/
+
+// Some addons just suck and we have to add these manually once
+
+// Feedbar
+user_pref("extensions.feedbar.notify", false)
+
+// Mouseless Browsing
+user_pref("mouselessbrowsing.idChars", "TNSERIAO")
+user_pref("mouselessbrowsing.idType", "CHAR")
+user_pref("mouselessbrowsing.keys.clearKeybuffer", "0")
+user_pref("mouselessbrowsing.keys.historyBack", "1234")
+user_pref("mouselessbrowsing.keys.historyForward", "3010")
+user_pref("mouselessbrowsing.keys.openInNewTabPostfixKey", "576")
+user_pref("mouselessbrowsing.keys.openInNewWindowPostfixKey", "560")
+user_pref("mouselessbrowsing.showIdsOnDemand", true)
+user_pref("mouselessbrowsing.keys.updatePage", "3041")
+
+// NoScript
+user_pref("noscript.keys.toggle", "alt n")
+user_pref("noscript.keys.ui", "alt shift n")
+//user_pref("noscript.autoAllow", 1)
+user_pref("noscript.confirmUnblock", false)
+user_pref("noscript.confirmUnsafeReload", false)
+user_pref("noscript.notify", false)
+user_pref("noscript.notify.bottom", false)
+
 
 /******************************************************************************
  * HTML5 / APIs / DOM                                                         *
@@ -12,6 +53,7 @@
 // http://www.mozilla.org/en-US/firefox/geolocation/
 user_pref("geo.enabled",		false);
 
+// [Handled by Self-Destructing Cookies - Clear a Site's LocalStorage along with Cookies]
 // http://kb.mozillazine.org/Dom.storage.enabled
 // http://dev.w3.org/html5/webstorage/#dom-localstorage
 // you can also see this with Panopticlick's "DOM localStorage"
@@ -71,11 +113,11 @@ user_pref("dom.gamepad.enabled",		false);
 // https://developer.mozilla.org/en-US/Firefox/Releases/36#Interfaces.2FAPIs.2FDOM
 user_pref("dom.vr.enabled",		false);
 
-// disable webGL
+// disable webGL - fingerprintable
 // http://www.contextis.com/resources/blog/webgl-new-dimension-browser-exploitation/
 user_pref("webgl.disabled",		true);
 // somewhat related...
-//user_pref("pdfjs.enableWebGL",		false);
+user_pref("pdfjs.enableWebGL",		false);
 
 /******************************************************************************
  * Misc                                                                       *
@@ -83,15 +125,17 @@ user_pref("webgl.disabled",		true);
  ******************************************************************************/
 
 // Default search engine
-//user_pref("browser.search.defaultenginename",		"DuckDuckGo");
+user_pref("browser.search.defaultenginename",		"Startpage HTTPS");
+user_pref("keyword.URL",       "https://www.startpage.com/do/search?language=english&cat=web&query=");
 
 // http://kb.mozillazine.org/Clipboard.autocopy
 user_pref("clipboard.autocopy",		false);
 
+// [uses the default search engine]
 // Display an error message indicating the entered information is not a valid
 // URL instead of asking from google.
 // http://kb.mozillazine.org/Keyword.enabled#Caveats
-user_pref("keyword.enabled",		false);
+//user_pref("keyword.enabled",		false);
 
 // Don't try to guess where i'm trying to go!!! e.g.: "http://foo" -> "http://(prefix)foo(suffix)"
 // http://www-archive.mozilla.org/docs/end-user/domain-guessing.html
@@ -137,11 +181,12 @@ user_pref("browser.urlbar.filter.javascript",		true);
 // NOTE: to be removed(?) see: https://bugzilla.mozilla.org/show_bug.cgi?id=729030
 //user_pref("browser.frames.enabled",		false);
 
+// [Pre-Firefox-38 vulnerability]
 // http://asmjs.org/
 // https://www.mozilla.org/en-US/security/advisories/mfsa2015-29/
 // https://www.mozilla.org/en-US/security/advisories/mfsa2015-50/
 // https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-2712
-user_pref("javascript.options.asmjs",		false);
+//user_pref("javascript.options.asmjs",		false);
 
 // https://wiki.mozilla.org/SVGOpenTypeFonts
 // the iSEC Partners Report recommends to disable this
@@ -297,6 +342,7 @@ user_pref("security.csp.enable",		true);
 // https://github.com/pyllyukko/user.js/issues/11
 //user_pref("privacy.donottrackheader.enabled",		true);
 
+// Same as smart referer
 // http://kb.mozillazine.org/Network.http.sendRefererHeader#0
 // https://bugzilla.mozilla.org/show_bug.cgi?id=822869
 // Send a referer header with the target URI as the source
@@ -320,8 +366,10 @@ user_pref("network.cookie.cookieBehavior",		1);
 // http://kb.mozillazine.org/Browser.sessionstore.postdata
 // NOTE: relates to CIS 2.5.7
 user_pref("browser.sessionstore.postdata",		0);
+
+// [I like tab restore outside of private browsing mode]
 // http://kb.mozillazine.org/Browser.sessionstore.enabled
-user_pref("browser.sessionstore.enabled",		false);
+//user_pref("browser.sessionstore.enabled",		false);
 
 // http://kb.mozillazine.org/Browser.cache.offline.enable
 user_pref("browser.cache.offline.enable",		false);
@@ -329,31 +377,34 @@ user_pref("browser.cache.offline.enable",		false);
 // Always use private browsing
 // https://support.mozilla.org/en-US/kb/Private-Browsing
 // https://wiki.mozilla.org/PrivateBrowsing
-user_pref("browser.privatebrowsing.autostart",		true);
-user_pref("extensions.ghostery.privateBrowsing",		true);
+//user_pref("browser.privatebrowsing.autostart",		true);
+//user_pref("extensions.ghostery.privateBrowsing",		true);
 
 // Clear history when Firefox closes
 // https://support.mozilla.org/en-US/kb/Clear%20Recent%20History#w_how-do-i-make-firefox-clear-my-history-automatically
 user_pref("privacy.sanitize.sanitizeOnShutdown",		true);
 user_pref("privacy.clearOnShutdown.cache",		true);
 user_pref("privacy.clearOnShutdown.cookies",		true);
-user_pref("privacy.clearOnShutdown.downloads",		true);
-user_pref("privacy.clearOnShutdown.formdata",		true);
-user_pref("privacy.clearOnShutdown.history",		true);
+user_pref("privacy.clearOnShutdown.downloads",		false);
+user_pref("privacy.clearOnShutdown.formdata",		false);
+user_pref("privacy.clearOnShutdown.history",		false);
 user_pref("privacy.clearOnShutdown.offlineApps",		true);
 user_pref("privacy.clearOnShutdown.passwords",		true);
 user_pref("privacy.clearOnShutdown.sessions",		true);
 user_pref("privacy.clearOnShutdown.siteSettings",		true);
 
 // don't remember browsing history
-user_pref("places.history.enabled",		false);
+//user_pref("places.history.enabled",		false);
 
 // The cookie expires at the end of the session (when the browser closes).
 // http://kb.mozillazine.org/Network.cookie.lifetimePolicy#2
 user_pref("network.cookie.lifetimePolicy",		2);
 
 // http://kb.mozillazine.org/Browser.cache.disk.enable
-user_pref("browser.cache.disk.enable",		false);
+//user_pref("browser.cache.disk.enable",		false);
+
+// 1GB cache
+user_pref("browser.cache.disk.free_space_hard_limit", 1024);
 
 // http://kb.mozillazine.org/Browser.cache.memory.enable
 //user_pref("browser.cache.memory.enable",		false);
@@ -367,21 +418,21 @@ user_pref("signon.rememberSignons",		false);
 
 // CIS Version 1.2.0 October 21st, 2011 2.5.4 Delete History and Form Data
 // http://kb.mozillazine.org/Browser.history_expire_days
-user_pref("browser.history_expire_days",		0);
+//user_pref("browser.history_expire_days",		0);
 
 // http://kb.mozillazine.org/Browser.history_expire_sites
-user_pref("browser.history_expire_sites",		0);
+//user_pref("browser.history_expire_sites",		0);
 
 // http://kb.mozillazine.org/Browser.history_expire_visits
-user_pref("browser.history_expire_visits",		0);
+//user_pref("browser.history_expire_visits",		0);
 
 // CIS Version 1.2.0 October 21st, 2011 2.5.5 Delete Download History
 // Zero (0) is an indication that no download history is retained for the current profile.
 user_pref("browser.download.manager.retention",		0);
 
 // CIS Version 1.2.0 October 21st, 2011 2.5.6 Delete Search and Form History
-user_pref("browser.formfill.enable",		false);
-user_pref("browser.formfill.expire_days",		0);
+//user_pref("browser.formfill.enable",		false);
+//user_pref("browser.formfill.expire_days",		0);
 
 // CIS Version 1.2.0 October 21st, 2011 2.5.7 Clear SSL Form Session Data
 // http://kb.mozillazine.org/Browser.sessionstore.privacy_level#2
@@ -396,6 +447,9 @@ user_pref("browser.helperApps.deleteTempFileOnExit",		true);
  * UI related                                                                 *
  *                                                                            *
  ******************************************************************************/
+
+// Restore previous session when the browser is launched
+user_pref("browser.startup.page", 3);
 
 // Webpages will not be able to affect the right-click menu
 //user_pref("dom.event.contextmenu.enabled",		false);
@@ -428,13 +482,13 @@ user_pref("network.IDN_show_punycode",		true);
 
 // http://kb.mozillazine.org/About:config_entries#Browser
 // http://kb.mozillazine.org/Inline_autocomplete
-user_pref("browser.urlbar.autoFill",		false);
-user_pref("browser.urlbar.autoFill.typed",		false);
+//user_pref("browser.urlbar.autoFill",		false);
+//user_pref("browser.urlbar.autoFill.typed",		false);
 
 // http://www.labnol.org/software/browsers/prevent-firefox-showing-bookmarks-address-location-bar/3636/
 // http://kb.mozillazine.org/Browser.urlbar.maxRichResults
 // "Setting the preference to 0 effectively disables the Location Bar dropdown entirely."
-user_pref("browser.urlbar.maxRichResults",		0);
+//user_pref("browser.urlbar.maxRichResults",		0);
 
 // https://blog.mozilla.org/security/2010/03/31/plugging-the-css-history-leak/
 // http://dbaron.org/mozilla/visited-privacy
@@ -443,7 +497,7 @@ user_pref("layout.css.visited_links_enabled",		false);
 // http://kb.mozillazine.org/Places.frecency.unvisited%28place_type%29Bonus
 
 // http://kb.mozillazine.org/Disabling_autocomplete_-_Firefox#Firefox_3.5
-user_pref("browser.urlbar.autocomplete.enabled",		false);
+//user_pref("browser.urlbar.autocomplete.enabled",		false);
 
 // http://kb.mozillazine.org/Signon.autofillForms
 // https://www.torproject.org/projects/torbrowser/design/#identifier-linkability
@@ -575,7 +629,7 @@ user_pref("security.tls.unrestricted_rc4_fallback",		false);
  *   http://en.citizendium.org/wiki/Meet-in-the-middle_attack
  *
  *
- * See also: 
+ * See also:
  *
  * http://www-archive.mozilla.org/projects/security/pki/nss/ssl/fips-ssl-ciphersuites.html
  */
@@ -616,3 +670,5 @@ user_pref("security.ssl3.dhe_dss_camellia_256_sha",		false);
 // Fallbacks due compatibility reasons
 user_pref("security.ssl3.rsa_aes_256_sha",		true);
 user_pref("security.ssl3.rsa_aes_128_sha",		true);
+
+
