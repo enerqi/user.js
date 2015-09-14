@@ -50,8 +50,9 @@ See [issue #14](https://github.com/pyllyukko/user.js/issues/14) for further deta
 ### Windows
 
 ```
-cd /path/to/user.js/
-mklink /H user.js %HOME%\%appdata%\Roaming\Mozilla\Firefox\Profiles\XXXXXXXX.secure
+cd %HOME%\%appdata%\Roaming\Mozilla\Firefox\Profiles\XXXXXXXX.myprofilename
+
+mklink /H user.js /path/to/user.js/user.js
 ```
 
 On Windows, you need to drop the ```user.js``` file to ```%appdata%\Mozilla\Firefox\Profiles\XXXXXXXX.your_profile_name```.
