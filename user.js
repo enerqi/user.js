@@ -284,10 +284,10 @@ user_pref("browser.pocket.enabled",     false);
  *                                                                            *
  ******************************************************************************/
 
-// Disable link prefetching
+// Disable link prefetching? Doesn't seem so bad if fixed up the Referer header and blocked 3rd party cookies.
 // http://kb.mozillazine.org/Network.prefetch-next
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Link_prefetching_FAQ#Is_there_a_preference_to_disable_link_prefetching.3F
-user_pref("network.prefetch-next",      false);
+// user_pref("network.prefetch-next",      false);
 
 // https://support.mozilla.org/en-US/kb/how-stop-firefox-making-automatic-connections#w_geolocation-for-default-search-engine
 user_pref("browser.search.geoip.url",       "");
