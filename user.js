@@ -116,6 +116,9 @@ user_pref("dom.gamepad.enabled",        false);
 // https://developer.mozilla.org/en-US/Firefox/Releases/36#Interfaces.2FAPIs.2FDOM
 user_pref("dom.vr.enabled",     false);
 
+// disable notifications
+user_pref("dom.webnotifications.enabled",      false);
+
 // disable webGL - fingerprintable
 // http://www.contextis.com/resources/blog/webgl-new-dimension-browser-exploitation/
 user_pref("webgl.disabled",     true);
@@ -349,7 +352,10 @@ user_pref("security.csp.enable",        true);
 // http://kb.mozillazine.org/Network.http.sendRefererHeader#0
 // https://bugzilla.mozilla.org/show_bug.cgi?id=822869
 // Send a referer header with the target URI as the source
-user_pref("network.http.sendRefererHeader",     1);
+// As many sites require network.http.sendRefererHeader to be 2. Notice
+// that we still use the network.http.referer.spoofSource setting, so that
+// no information is leaked in the referer header anyway.
+//user_pref("network.http.sendRefererHeader",     1);
 user_pref("network.http.referer.spoofSource",       true);
 // CIS Version 1.2.0 October 21st, 2011 2.4.3 Disable Referer from an SSL Website
 user_pref("network.http.sendSecureXSiteReferrer",       false);
