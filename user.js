@@ -20,6 +20,9 @@ So, no better privacy. Could also nuke all local data on browser close.
 
 // Some addons just suck and we may have to add these manually once
 
+// Self Destructing Cookies
+user_pref("extensions.jid0-9XfBwUWnvPx4wWsfBWMCm4Jj69E@jetpack.displayNotification", false);
+
 // Feedbar
 user_pref("extensions.feedbar.notify", false);
 
