@@ -413,7 +413,7 @@ user_pref("privacy.clearOnShutdown.downloads",      false);
 user_pref("privacy.clearOnShutdown.formdata",       false);
 user_pref("privacy.clearOnShutdown.history",        false);
 user_pref("privacy.clearOnShutdown.offlineApps",        true);
-user_pref("privacy.clearOnShutdown.passwords",      true);
+user_pref("privacy.clearOnShutdown.passwords",      false);
 user_pref("privacy.clearOnShutdown.sessions",       true);
 user_pref("privacy.clearOnShutdown.siteSettings",       true);
 
