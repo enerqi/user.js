@@ -68,6 +68,7 @@ user_pref("geo.enabled",        false);
 // Don't reveal internal IPs
 // http://net.ipcalf.com/
 user_pref("media.peerconnection.enabled",       false);
+user_pref("media-peerconnection.ice.default_address_only",      true);
 // getUserMedia
 // https://wiki.mozilla.org/Media/getUserMedia
 // https://developer.mozilla.org/en-US/docs/Web/API/Navigator
@@ -132,6 +133,9 @@ user_pref("pdfjs.enableWebGL",      false);
  * Misc                                                                       *
  *                                                                            *
  ******************************************************************************/
+
+// Disable face detection by default
+user_pref("camera.control.face_detection.enabled",    false);
 
 // Default search engine
 user_pref("browser.search.defaultenginename",       "Startpage HTTPS");
@@ -211,8 +215,14 @@ user_pref("media.video_stats.enabled",     false);
  *                                                                            *
  ******************************************************************************/
 
+// Opt-out of add-on metadata updates
+user_pref("extensions.getAddons.cache.enabled",   false);
+
 // Flash plugin state - never activate
 user_pref("plugin.state.flash",     1);
+
+// disable Gnome Shell Integration
+user_pref("plugin.state.libgnome-shell-browser-plugin",    0);
 
 // https://wiki.mozilla.org/Firefox/Click_To_Play
 // https://blog.mozilla.org/security/2012/10/11/click-to-play-plugins-blocklist-style/
@@ -258,7 +268,10 @@ user_pref("datareporting.healthreport.service.enabled",     false);
 // http://forums.mozillazine.org/viewtopic.php?p=13876331#p13876331
 user_pref("browser.newtabpage.enhanced",        false);
 user_pref("browser.newtab.preload",     false);
+// https://gecko.readthedocs.org/en/latest/browser/browser/DirectoryLinksProvider.html#browser-newtabpage-directory-source
+user_pref("browser.newtabpage.directory.source",       "data:text/plain,{}");
 // https://wiki.mozilla.org/Tiles/Technical_Documentation#Ping
+// https://gecko.readthedocs.org/en/latest/browser/browser/DirectoryLinksProvider.html#browser-newtabpage-directory-ping
 user_pref("browser.newtabpage.directory.ping",      "");
 
 // disable heartbeat
@@ -467,6 +480,9 @@ user_pref("browser.sessionstore.privacy_level",     2);
 // https://bugzil.la/238789#c19
 user_pref("browser.helperApps.deleteTempFileOnExit",        true);
 
+// https://developer.mozilla.org/en-US/docs/Mozilla/Preferences/Preference_reference/browser.pagethumbnails.capturing_disabled
+user_pref("browser.pagethumbnails.capturing_disabled",     true);
+
 /******************************************************************************
  * UI related                                                                 *
  *                                                                            *
@@ -556,12 +572,6 @@ user_pref("security.ask_for_password",      0);
 // https://blog.mozilla.org/security/2012/11/01/preloading-hsts/
 // https://wiki.mozilla.org/Privacy/Features/HSTS_Preload_List
 user_pref("network.stricttransportsecurity.preloadlist",        true);
-
-// enable SPDY
-// https://en.wikipedia.org/wiki/SPDY
-user_pref("network.http.spdy.enabled",      true);
-user_pref("network.http.spdy.enabled.v3",       true);
-user_pref("network.http.spdy.enabled.v3-1",     true);
 
 // CIS Version 1.2.0 October 21st, 2011 2.2.4 Enable Online Certificate Status Protocol
 user_pref("security.OCSP.enabled",      1);

@@ -14,7 +14,7 @@ This is a [user.js][1] configuration file for Mozilla Firefox that's supposed to
 * Make sure the browser doesn't reveal too much information to [shoulder surfers](https://en.wikipedia.org/wiki/Shoulder_surfing_%28computer_security%29)
 * Harden the browser's encryption (cipher suites, protocols, trusted CAs)
 * Hopefully limit the attack surface by disabling various features
-* Still be at least somewhat usable in daily use
+* Still be usable in daily use
 
 ### How to achieve this?
 
@@ -130,7 +130,7 @@ See also [#20](https://github.com/pyllyukko/user.js/issues/20).
 ### HTTP
 
 * Referer header:
-  * Spoofs the referer header with [network.http.referer.spoofSource][9] & [Network.http.sendRefererHeader](http://kb.mozillazine.org/Network.http.sendRefererHeader#1)
+  * Spoofs the referer header with [network.http.referer.spoofSource][9] (see: [#2](https://github.com/pyllyukko/user.js/pull/2))
   * "[Don't send the Referer header when navigating from a https site to another https site.](http://kb.mozillazine.org/Network.http.sendSecureXSiteReferrer#false)"
 * Don't accept [3rd party cookies](http://kb.mozillazine.org/Network.cookie.cookieBehavior#1)
 
@@ -230,6 +230,7 @@ See also:
 * [Privacy Badger](https://www.eff.org/privacybadger) extension from EFF (also to be considered as an additional security measure and not a complete solution)
 * [Web Browser Addons](https://prism-break.org/en/subcategories/gnu-linux-web-browser-addons/) section in [PRISM break](https://prism-break.org/)
 * [\[Talk\] Ghostery Vs. Disconnect.me Vs. uBlock #16](https://github.com/pyllyukko/user.js/issues/16)
+* [Ghostery sneaks in new promotional messaging system #47](https://github.com/pyllyukko/user.js/issues/47)
 * [Are We Private Yet?](http://www.areweprivateyet.com/) site (made by Ghostery)
 * [Tracking Protection in Firefox For Privacy and Performance](https://kontaxis.github.io/trackingprotectionfirefox/#papers) paper
 
@@ -263,6 +264,8 @@ Online tests
 * [battery.js](https://pstadler.sh/battery.js/)
 * [RC4 fallback test](https://rc4.io/)
 * [Battery API](https://robnyman.github.io/battery/)
+* [AmIUnique](https://amiunique.org/) ([Source](https://github.com/DIVERSIFY-project/amiunique))
+
 
 ### HTML5test
 
@@ -394,6 +397,7 @@ TODO
   - [Tor fingerprinting topic](https://www.torproject.org/projects/torbrowser/design/#fingerprinting-linkability)
   - [Bug 967895](https://bugzilla.mozilla.org/show_bug.cgi?id=967895)
   - [Pixel Perfect: Fingerprinting Canvas in HTML5](http://www.w2spconf.com/2012/papers/w2sp12-final4.pdf)
+  - https://addons.mozilla.org/en-US/firefox/addon/canvasblocker/, https://github.com/kkapsner/CanvasBlocker/issues/
 - [ ] [Address Sanitizer](https://developer.mozilla.org/en-US/docs/Building_Firefox_with_Address_Sanitizer)
 - [ ] Send bogus timezone
 
@@ -401,6 +405,8 @@ Contributing
 ------------
 
 Yes please! All issues and pull requests are more than welcome. Please try to break down your pull requests or commits into small / manageable entities, so they are easier to process. All the settings in the ```user.js``` file should have some official references to them, so the effect of those settings can be easily verified from Mozilla's documentation.
+
+For more information, see <https://github.com/pyllyukko/user.js/blob/master/CONTRIBUTING.md>.
 
 References
 ----------
@@ -418,6 +424,7 @@ References
 * [Mozilla Security Blog](https://blog.mozilla.org/security/category/security/)
 * [Security and privacy-related preferences](http://kb.mozillazine.org/Category:Security_and_privacy-related_preferences)
 * [How to stop Firefox from making automatic connections](https://support.mozilla.org/en-US/kb/how-stop-firefox-making-automatic-connections)
+* [Diff between various Firefox .js configurations in upcoming releases](http://cat-in-136.github.io/)
 
 [1]: http://kb.mozillazine.org/User.js_file
 [2]: https://wiki.mozilla.org/Security:Renegotiation#security.ssl.require_safe_negotiation
