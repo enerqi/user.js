@@ -68,6 +68,7 @@ user_pref("geo.enabled",        false);
 // Don't reveal internal IPs
 // http://net.ipcalf.com/
 user_pref("media.peerconnection.enabled",       false);
+user_pref("media.peerconnection.ice.default_address_only",      true);
 // getUserMedia
 // https://wiki.mozilla.org/Media/getUserMedia
 // https://developer.mozilla.org/en-US/docs/Web/API/Navigator
@@ -312,9 +313,13 @@ user_pref("network.dns.disablePrefetchFromHTTPS",       true);
 
 // https://wiki.mozilla.org/Privacy/Reviews/Necko
 user_pref("network.predictor.enabled",      false);
+// https://wiki.mozilla.org/Privacy/Reviews/Necko#Principle:_Real_Choice
+user_pref("network.seer.enabled",      false);
 
 // http://kb.mozillazine.org/Browser.search.suggest.enabled
 user_pref("browser.search.suggest.enabled",     false);
+// Disable "Show search suggestions in location bar results"
+user_pref("browser.urlbar.suggest.searches",    false);
 
 // Disable SSDP
 // https://bugzil.la/1111967
