@@ -189,6 +189,9 @@ user_pref("security.fileuri.strict_origin_policy",      true);
 // http://kb.mozillazine.org/Browser.urlbar.filter.javascript
 user_pref("browser.urlbar.filter.javascript",       true);
 
+// display all parts of the url
+user_pref("browser.urlbar.trimURLs", false);
+
 // Disable HTML frames
 // WARNING: might make your life difficult!
 // NOTE: to be removed(?) see: https://bugzilla.mozilla.org/show_bug.cgi?id=729030
@@ -527,6 +530,12 @@ user_pref("browser.pagethumbnails.capturing_disabled",     true);
 user_pref("browser.slowStartup.notificationDisabled", true);
 user_pref("browser.slowStartup.maxSamples", 0);
 user_pref("browser.slowStartup.samples", 0);
+
+// disable Jumplist (Windows7+)
+user_pref("browser.taskbar.lists.enabled", false);
+user_pref("browser.taskbar.lists.frequent.enabled", false);
+user_pref("browser.taskbar.lists.recent.enabled", false);
+user_pref("browser.taskbar.lists.tasks.enabled", false);
 
 // Hide informartion bar about user rights - it is already shown
 user_pref("browser.rights.3.shown", true);
