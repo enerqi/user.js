@@ -218,8 +218,19 @@ user_pref("media.video_stats.enabled",     false);
 // Opt-out of add-on metadata updates
 user_pref("extensions.getAddons.cache.enabled",   false);
 
+// 0373: disable "Pocket" (third party "save for later" service) & remove urls for good measure
+// NOTE: Important: Remove the pocket icon from your toolbar first
+// https://www.gnu.gl/blog/Posts/multiple-vulnerabilities-in-pocket/
+user_pref("extensions.pocket.enabled", false);
+user_pref("extensions.pocket.api", "");
+user_pref("extensions.pocket.site", "");
+user_pref("extensions.pocket.oAuthConsumerKey", "");
+
 // Flash plugin state - never activate
 user_pref("plugin.state.flash",     1);
+
+// No plugin crash reporting
+user_pref("dom.ipc.plugins.flash.subprocess.crashreporter.enabled", false);
 
 // disable Gnome Shell Integration
 user_pref("plugin.state.libgnome-shell-browser-plugin",    0);
@@ -248,10 +259,19 @@ user_pref("toolkit.telemetry.enabled",      false);
 // https://gecko.readthedocs.org/en/latest/toolkit/components/telemetry/telemetry/preferences.html
 user_pref("toolkit.telemetry.unified",     false);
 
+// https://wiki.mozilla.org/Telemetry/Experiments
+user_pref("experiments.enabled", false);
+user_pref("experiments.manifest.uri", "");
+user_pref("experiments.supported", false);
+user_pref("experiments.activeExperiment", false);
+user_pref("network.allow-experiments", false);
+
 // https://wiki.mozilla.org/Polaris#Tracking_protection
 // https://support.mozilla.org/en-US/kb/tracking-protection-firefox
 // TODO: are these two the same?
-user_pref("privacy.trackingprotection.enabled",     true);
+// we use ublock origin, which is not decided by a 3rd party (disconnect)
+user_pref("privacy.trackingprotection.enabled", false); // all windows pref (not just private)
+user_pref("privacy.trackingprotection.pbmode.enabled", false); // private browsing pref
 
 // Disable the built-in PDF viewer (CVE-2015-2743)
 // https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2015-2743
@@ -291,7 +311,7 @@ user_pref("browser.selfsupport.url",        "");
 // http://kb.mozillazine.org/Safe_browsing
 // https://support.mozilla.org/en-US/kb/how-does-phishing-and-malware-protection-work
 // http://forums.mozillazine.org/viewtopic.php?f=39&t=2711237&p=12896849#p12896849
-user_pref("browser.safebrowsing.enabled",       true);
+user_pref("browser.safebrowsing.enabled",       false);
 
 // CIS 2.3.5 Block Reported Attack Sites
 // http://kb.mozillazine.org/Browser.safebrowsing.malware.enabled
@@ -300,6 +320,17 @@ user_pref("browser.safebrowsing.malware.enabled",       true);
 // Disable safe browsing for downloaded files. this leaks information to google.
 // https://wiki.mozilla.org/Security/Application_Reputation
 user_pref("browser.safebrowsing.downloads.remote.enabled", false);
+user_pref("browser.safebrowsing.downloads.remote.url", "");
+user_pref("browser.safebrowsing.appRepURL", ""); // google application reputation check
+
+user_pref("browser.safebrowsing.provider.google.reportURL", "");
+user_pref("browser.safebrowsing.reportMalwareMistakeURL", "");
+user_pref("browser.safebrowsing.reportPhishMistakeURL", "");
+user_pref("browser.safebrowsing.reportPhishURL", "");
+
+// disable mozilla safebrowsing downloads, updates
+user_pref("browser.safebrowsing.provider.mozilla.gethashURL", ""); // resolves hash conflicts
+user_pref("browser.safebrowsing.provider.mozilla.updateURL", ""); // update FF lists
 
 // Disable pocket
 // https://support.mozilla.org/en-US/kb/save-web-pages-later-pocket-firefox
@@ -491,6 +522,18 @@ user_pref("browser.pagethumbnails.capturing_disabled",     true);
  * UI related                                                                 *
  *                                                                            *
  ******************************************************************************/
+
+// Stop trying to record startup time and tell users of ways to improve startup time
+user_pref("browser.slowStartup.notificationDisabled", true);
+user_pref("browser.slowStartup.maxSamples", 0);
+user_pref("browser.slowStartup.samples", 0);
+
+// Hide informartion bar about user rights - it is already shown
+user_pref("browser.rights.3.shown", true);
+
+// Win10 Welcome - remove
+user_pref("browser.usedOnWindows10.introURL", "");
+
 
 // open or switch tabs animation - PERFORMANCE only
 user_pref("browser.tabs.animate", false);
