@@ -84,10 +84,68 @@ user_pref("dom.event.clipboardevents.enabled",      false);
 // https://wiki.mozilla.org/Security/Reviews/Firefox/NavigationTimingAPI
 user_pref("dom.enable_performance",     false);
 
+// 2503: disable giving away network info
+   // eg bluetooth, cellular, ethernet, wifi, wimax, other, mixed, unknown, none
+   // https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API
+   // https://wicg.github.io/netinfo/
+   // https://bugzilla.mozilla.org/show_bug.cgi?id=960426
+user_pref("dom.netinfo.enabled", false);
+
+// 2507: disable keyboard fingerprinting (FF38+) (physical keyboards)
+   // The Keyboard API allows tracking the "read parameter" of pressed keys in forms on
+   // web pages. These parameters vary between types of keyboard layouts such as QWERTY,
+   // AZERTY, Dvorak, and between various languages, eg German vs English.
+   // WARNING: Don't use if Android + physical keyboard
+   // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
+   // https://www.privacy-handbuch.de/handbuch_21v.htm
+user_pref("dom.keyboardevent.code.enabled", false);
+user_pref("dom.beforeAfterKeyboardEvent.enabled", false);
+user_pref("dom.keyboardevent.dispatch_during_composition", false);
+
+// 2509: disable touch events
+   // https://developer.mozilla.org/en-US/docs/Web/API/Touch_events
+   // https://trac.torproject.org/projects/tor/ticket/10286
+   // fingerprinting attack vector - leaks screen res & actual screen coordinates
+   // WARNING: If you use touch eg Win8/10 Metro/Smartphone reset this to default
+user_pref("dom.w3c_touch_events.enabled", 0);
+
+// 2410: disable User Timing API
+   // https://trac.torproject.org/projects/tor/ticket/16336
+user_pref("dom.enable_user_timing", false);
+// 2411: disable resource/navigation timing
+user_pref("dom.enable_resource_timing", false);
+// 2412: disable timing attacks - javascript performance fingerprinting
+   // https://wiki.mozilla.org/Security/Reviews/Firefox/NavigationTimingAPI
+user_pref("dom.enable_performance", false);
+// 2414: disable shaking the screen
+user_pref("dom.vibrator.enabled", false);
+// 2415: max popups from a single non-click event - default is 20!
+user_pref("dom.popup_maximum", 3);
+// 2416: disable idle observation
+user_pref("dom.idle-observers-api.enabled", false);
+
+// UI SPOOFING: disable scripts hiding or disabling the following on new windows
+user_pref("dom.disable_window_open_feature.location", true);
+user_pref("dom.disable_window_open_feature.menubar", true);
+user_pref("dom.disable_window_open_feature.resizable", true);
+user_pref("dom.disable_window_open_feature.scrollbars", true);
+user_pref("dom.disable_window_open_feature.status", true);
+user_pref("dom.disable_window_open_feature.toolbar", true);
+// POPUP windows - prevent or allow javascript UI meddling
+user_pref("dom.disable_window_flip", true); // window z-order
+user_pref("dom.disable_window_move_resize", true);
+user_pref("dom.disable_window_open_feature.close", true);
+user_pref("dom.disable_window_open_feature.minimizable", true);
+user_pref("dom.disable_window_open_feature.personalbar", true); //bookmarks toolbar
+user_pref("dom.disable_window_open_feature.titlebar", true);
+user_pref("dom.disable_window_status_change", true);
+user_pref("dom.allow_scripts_to_close_windows", false);
+
 // Speech recognition
 // https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html
 // https://wiki.mozilla.org/HTML5_Speech_API
 user_pref("media.webspeech.recognition.enable",     false);
+user_pref("media.webspeech.synth.enabled", false);
 
 // Disable getUserMedia screen sharing
 // https://mozilla.github.io/webrtc-landing/gum_test.html
@@ -126,6 +184,9 @@ user_pref("dom.webnotifications.enabled",      false);
 // disable webGL - fingerprintable
 // http://www.contextis.com/resources/blog/webgl-new-dimension-browser-exploitation/
 user_pref("webgl.disabled",     true);
+user_pref("webgl.min_capability_mode", true);
+user_pref("webgl.disable-extensions", true);
+user_pref("webgl.disable-fail-if-major-performance-caveat", true);
 // somewhat related...
 user_pref("pdfjs.enableWebGL",      false);
 
@@ -156,6 +217,11 @@ user_pref("browser.fixup.alternate.enabled",        false);
 
 // https://trac.torproject.org/projects/tor/wiki/doc/TorifyHOWTO/WebBrowsers
 user_pref("network.proxy.socks_remote_dns",     true);
+
+// 2625: Applications [non Tor protocol] SHOULD generate an error
+   // upon the use of .onion and SHOULD NOT perform a DNS lookup.
+   // https://bugzilla.mozilla.org/show_bug.cgi?id=1228457
+user_pref("network.dns.blockDotOnion", true);
 
 // http://kb.mozillazine.org/Network.proxy.type
 // the default in Firefox for Linux is to use system proxy settings.
@@ -234,12 +300,17 @@ user_pref("extensions.pocket.api", "");
 user_pref("extensions.pocket.site", "");
 user_pref("extensions.pocket.oAuthConsumerKey", "");
 
+// 1805: disable (scanning for) plugins -
+   // http://kb.mozillazine.org/Plugin_scanning
+   // plid.all = whether to scan the directories specified in the Windows registry for PLIDs
+   // includes: RealPlayer, Next-Generation Java Plug-In, Adobe Flash, Antivirus etc
+   // WARNING: The author turned off plugins, try it one day. You are not missing much.
+user_pref("plugin.scan.plid.all", false);
 // Flash plugin state
 // 0=disabled, 1=ask to activate, 2=active
 user_pref("plugin.state.flash", 1);
 user_pref("plugin.default.state", 1);
 user_pref("plugin.defaultXpi.state", 1);
-
 // Disable - the string refers to min version number allowed
 user_pref("plugin.scan.Acrobat", "99999");
 user_pref("plugin.scan.Quicktime", "99999");
@@ -299,6 +370,22 @@ user_pref("network.allow-experiments", false);
 // we use ublock origin, which is not decided by a 3rd party (disconnect)
 user_pref("privacy.trackingprotection.enabled", false); // all windows pref (not just private)
 user_pref("privacy.trackingprotection.pbmode.enabled", false); // private browsing pref
+
+// 2630: limit window.screen & CSS media queries providing large amounts of identifiable info.
+   // POC: http://ip-check.info/?lang=en (screen, usable screen, and browser window will match)
+   // https://bugzilla.mozilla.org/show_bug.cgi?id=418986
+   // NOTE: does not cover everything yet - https://bugzilla.mozilla.org/show_bug.cgi?id=1216800
+   // NOTE: this will probably make your values pretty unique until you resize or snap the
+   // inner window width + height into standard/common resolutions (mine is at 1280x800)
+   // To set a size, open a XUL (chrome) page (such as about:config) which is at 100% zoom, hit
+   // Shift+F4 to open the scratchpad, type window.resizeTo(1280,800), hit Ctrl+R to run. Test
+   // your window size, do some math, resize to allow for all the non inner window elements
+   // Test: http://browserspy.dk/screen.php
+   // Common resolutions: http://www.rapidtables.com/web/dev/screen-resolution-statistics.htm
+   // NOTE: This also spoofs screen orientation - https://bugzilla.mozilla.org/show_bug.cgi?id=1281949
+   // NOTE: This will also SOON hide the contents of navigator.plugins and navigator.mimeTypes
+   // https://bugzilla.mozilla.org/show_bug.cgi?id=1281963
+user_pref("privacy.resistFingerprinting", true); // (hidden pref)
 
 // Disable the built-in PDF viewer (CVE-2015-2743)
 // https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2015-2743
@@ -436,7 +523,7 @@ user_pref("security.sri.enable",       true);
 // https://en.wikipedia.org/wiki/Do_not_track_header
 // https://dnt-dashboard.mozilla.org
 // https://github.com/pyllyukko/user.js/issues/11
-//user_pref("privacy.donottrackheader.enabled",     true);
+user_pref("privacy.donottrackheader.enabled",     false);
 
 // Same as smart referer
 // http://kb.mozillazine.org/Network.http.sendRefererHeader#0
@@ -453,6 +540,11 @@ user_pref("network.http.sendSecureXSiteReferrer",       false);
 // CIS 2.5.1 Accept Only 1st Party Cookies
 // http://kb.mozillazine.org/Network.cookie.cookieBehavior#1
 user_pref("network.cookie.cookieBehavior",      1);
+
+// deprecated
+user_pref("network.http.spdy.enabled", false);
+user_pref("network.http.spdy.enabled.v3-1", false);
+user_pref("network.http.spdy.enabled.deps", false);
 
 // user-agent
 //user_pref("general.useragent.override", "Mozilla/5.0 (Windows NT 6.1; rv:31.0) Gecko/20100101 Firefox/31.0");
@@ -491,6 +583,16 @@ user_pref("privacy.clearOnShutdown.offlineApps",        true);
 user_pref("privacy.clearOnShutdown.passwords",      false);
 user_pref("privacy.clearOnShutdown.sessions",       true);
 user_pref("privacy.clearOnShutdown.siteSettings",       true);
+// 2804: (to match above) - auto selection of items to delete with Ctrl-Shift-Del
+user_pref("privacy.cpd.cache", true);
+user_pref("privacy.cpd.cookies", true);
+user_pref("privacy.cpd.downloads", false);
+user_pref("privacy.cpd.formdata", false);
+user_pref("privacy.cpd.history", false);
+user_pref("privacy.cpd.offlineApps", true);
+user_pref("privacy.cpd.passwords", false);
+user_pref("privacy.cpd.sessions", true);
+user_pref("privacy.cpd.siteSettings", true);
 
 // don't remember browsing history
 //user_pref("places.history.enabled",       false);
@@ -564,8 +666,17 @@ user_pref("browser.taskbar.lists.frequent.enabled", false);
 user_pref("browser.taskbar.lists.recent.enabled", false);
 user_pref("browser.taskbar.lists.tasks.enabled", false);
 
+// 2605: don't integrate activity into windows recent documents
+user_pref("browser.download.manager.addToRecentDocs", false);
+
+// 2606: disable hiding mime types (Options>Applications) not associated with a plugin
+user_pref("browser.download.hide_plugins_without_extensions", false);
+
 // Hide informartion bar about user rights - it is already shown
 user_pref("browser.rights.3.shown", true);
+
+// 2628: disable UITour backend so there is no chance that a remote page can use it
+user_pref("browser.uitour.enabled", false);
 
 // Win10 Welcome - remove
 user_pref("browser.usedOnWindows10.introURL", "");
@@ -647,6 +758,11 @@ user_pref("security.ssl.warn_missing_rfc5746",      1);
 // CIS Version 1.2.0 October 21st, 2011 2.5.3 Disable Prompting for Credential Storage
 user_pref("security.ask_for_password",      0);
 
+// 2620: disable middle mouse click opening links from clipboard
+   // https://trac.torproject.org/projects/tor/ticket/10089
+   // http://kb.mozillazine.org/Middlemouse.contentLoadURL
+user_pref("middlemouse.contentLoadURL", false);
+
 /******************************************************************************
  * TLS / HTTPS / OCSP related stuff                                           *
  *                                                                            *
@@ -702,6 +818,14 @@ user_pref("security.ssl.treat_unsafe_negotiation_as_broken",        true);
 //
 // you can test this at https://pinningtest.appspot.com/
 user_pref("security.ssl.errorReporting.automatic",      false);
+
+// 2627: don't reveal buildID
+   // navigator.buildID (see gecko.buildID in about:config) reveals build time
+   // down to the second which defeats user agent spoofing and can compromise OS etc
+   // https://bugzilla.mozilla.org/show_bug.cgi?id=583181
+   // test: http://browserspy.dk/showprop.php (see buildID)
+user_pref("general.buildID.override", "20100101"); // (hidden pref)
+
 
 /******************************************************************************
  * CIPHERS                                                                    *
@@ -800,3 +924,92 @@ user_pref("security.ssl3.rsa_aes_256_sha",      true);
 user_pref("security.ssl3.rsa_aes_128_sha",      true);
 
 
+/******************************************************************************
+ * Personal Settings                                                          *
+ *                                                                            *
+ ******************************************************************************/
+user_pref("general.warnOnAboutConfig", false);
+user_pref("browser.tabs.warnOnClose", false);
+user_pref("browser.tabs.warnOnCloseOtherTabs", false);
+user_pref("browser.tabs.warnOnOpen", false);
+
+// 3001a: disable warning when a domain requests full screen
+   // https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Using_full_screen_mode
+user_pref("full-screen-api.warning.delay", 0);
+user_pref("full-screen-api.warning.timeout", 0);
+// 3002: disable closing browser with last tab
+user_pref("browser.tabs.closeWindowWithLastTab", false);
+
+// 3004: disable backspace (0 = previous page, 1 = scroll up, 2 = do nothing)
+user_pref("browser.backspace_action", 2);
+
+// 3007: open new windows in a new tab instead
+   // This setting is under Options>General>Tabs
+   // 1=current window, 2=new window, 3=most recent window
+user_pref("browser.link.open_newwindow", 3);
+
+// 3008: disable "Do you really want to leave this site?" popups
+   // https://support.mozilla.org/en-US/questions/1043508
+user_pref("dom.disable_beforeunload", true);
+
+// 3010: enable ctrl-tab previews
+user_pref("browser.ctrlTab.previews", true);
+
+// 3011: don't open "page/selection source" in a tab. The window used instead is cleaner
+   // and easier to use and move around (eg developers/multi-screen).
+user_pref("view_source.tab", false);
+
+// 3012: spellchecking: 0=none, 1-multi-line controls, 2=multi-line & single-line controls
+user_pref("layout.spellcheckDefault", 1);
+
+// 3017: submenu in milliseconds. 0=instant while a small number allows
+   // a mouse pass over menu items without any submenus alarmingly shooting out
+user_pref("ui.submenuDelay", 75); // (hidden pref)
+
+
+/**- APPENDIX A: TEST SITES
+   Here is an exhaustive list of various websites in which to test your browser. You should enable
+   JS on these sites for the tests to present a worse-case scenario. In reality, you should control
+   JS and XSS (cross site scripting) on sites with add-ons such as NoScript, uMatrix, uBlock Origin,
+   among others, to reduce the possibility of fingerprinting attacks.
+   url: http://www.ghacks.net/2015/12/28/the-ultimate-online-privacy-test-resource-list/
+
+//* 01: Fingerprinting
+   Panopticlick      https://panopticlick.eff.org/
+   JoDonym           http://ip-check.info/?lang=en
+   Am I Unique?      https://amiunique.org/
+//* 02: Multiple Tests [single page]
+   Whoer             https://whoer.net/
+   5who              http://5who.net/?type=extend
+   IP/DNS Leak       https://ipleak.net/
+   IP Duh            http://ipduh.com/anonymity-check/
+//* 03: Multiple Tests [multi-page]
+   BrowserSpy.dk     http://browserspy.dk/
+   BrowserLeaks      https://www.browserleaks.com/
+   PC Flank          http://www.pcflank.com/index.htm
+//* 04: Encryption / Ciphers / SSL/TLS
+   BadSSL            https://badssl.com/
+   DCSec             https://cc.dcsec.uni-hannover.de/
+   Qualys SSL Labs   https://www.ssllabs.com/ssltest/viewMyClient.html
+   Fortify           https://www.fortify.net/sslcheck.html
+   How's My SSL      https://www.howsmyssl.com/
+   RC4               https://rc4.io/
+   Heartbleed        https://filippo.io/Heartbleed/
+   Freak Attack      https://freakattack.com/clienttest.html
+   Logjam            https://weakdh.org/
+//* 05: Other
+   Battery           https://pstadler.sh/battery.js/
+   DNS Leak          https://www.dnsleaktest.com/
+   DNS Spoofability  https://www.grc.com/dns/dns.htm
+   Evercookie        http://samy.pl/evercookie/
+   Firefox Addons    http://thehackerblog.com/addon_scanner/
+   localStorage      http://www.filldisk.com/
+   HSTS Supercookie  http://www.radicalresearch.co.uk/lab/hstssupercookies
+   HSTS [sniffly]    https://zyan.scripts.mit.edu/sniffly/
+   Popup Killer      http://www.kephyr.com/popupkillertest/index.html
+   Popup Test        http://www.popuptest.com/
+   Redirects         https://jigsaw.w3.org/HTTP/300/Overview.html
+   Referer Headers   https://www.darklaunch.com/tools/test-referer
+   Resouce://URI     https://www.browserleaks.com/firefox
+   WebRTC IP Leak    https://www.privacytools.io/webrtc.html
+***/
