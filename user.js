@@ -208,6 +208,11 @@ user_pref("browser.urlbar.trimURLs", false);
 // the iSEC Partners Report recommends to disable this
 user_pref("gfx.font_rendering.opentype_svg.enabled",        false);
 
+// Remove special underline handling for a few fonts which you will probably never use.
+// Any of these fonts on your system can be enumerated for fingerprinting. Requires restart.
+// http://kb.mozillazine.org/Font.blacklist.underline_offset
+user_pref("font.blacklist.underline_offset", "");
+
 // https://bugzil.la/654550
 // https://github.com/pyllyukko/user.js/issues/9#issuecomment-100468785
 // https://github.com/pyllyukko/user.js/issues/9#issuecomment-148922065
@@ -229,8 +234,27 @@ user_pref("extensions.pocket.api", "");
 user_pref("extensions.pocket.site", "");
 user_pref("extensions.pocket.oAuthConsumerKey", "");
 
-// Flash plugin state - never activate
-user_pref("plugin.state.flash",     1);
+// Flash plugin state
+// 0=disabled, 1=ask to activate, 2=active
+user_pref("plugin.state.flash", 1);
+user_pref("plugin.default.state", 1);
+user_pref("plugin.defaultXpi.state", 1);
+
+// Disable - the string refers to min version number allowed
+user_pref("plugin.scan.Acrobat", "99999");
+user_pref("plugin.scan.Quicktime", "99999");
+user_pref("plugin.scan.WindowsMediaPlayer", "99999");
+
+// Disable all DRM content (EME: Encryption Media Extension)
+user_pref("media.eme.enabled", false); // Options>Content>Play DRM Content
+user_pref("browser.eme.ui.enabled", false); // hides "Play DRM Content" checkbox, restart required
+user_pref("media.eme.apiVisible", false); // block websites detecting DRM is disabled
+// Disable the Adobe EME "Primetime CDM" (Content Decryption Module)
+// https://trac.torproject.org/projects/tor/ticket/16285
+user_pref("media.gmp-eme-adobe.enabled", false);
+// Delay play of videos until they're visible
+// https://bugzilla.mozilla.org/show_bug.cgi?id=1180563
+user_pref("media.block-play-until-visible", true);
 
 // No plugin crash reporting
 user_pref("dom.ipc.plugins.flash.subprocess.crashreporter.enabled", false);
