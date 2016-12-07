@@ -713,7 +713,8 @@ user_pref("browser.newtab.url",     "about:blank");
 
 // CIS Version 1.2.0 October 21st, 2011 2.1.2 Enable Auto Notification of Outdated Plugins
 // https://wiki.mozilla.org/Firefox3.6/Plugin_Update_Awareness_Security_Review
-user_pref("plugins.update.notifyUser",      true);
+// currently disabling all plugins! So ignore.
+//user_pref("plugins.update.notifyUser",      true);
 
 // CIS Version 1.2.0 October 21st, 2011 2.1.3 Enable Information Bar for Outdated Plugins
 user_pref("plugins.hide_infobar_for_outdated_plugin",       false);
