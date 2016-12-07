@@ -325,7 +325,7 @@ user_pref("media.eme.apiVisible", false); // block websites detecting DRM is dis
 user_pref("media.gmp-eme-adobe.enabled", false);
 // Delay play of videos until they're visible
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1180563
-user_pref("media.block-play-until-visible", true);
+user_pref("media.block-play-until-visible", false);
 
 // No plugin crash reporting
 user_pref("dom.ipc.plugins.flash.subprocess.crashreporter.enabled", false);
