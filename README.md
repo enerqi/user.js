@@ -9,7 +9,7 @@ This is a [user.js][1] configuration file for Mozilla Firefox that's supposed to
 ### Main goals
 
 * Limit the possibilities to track the user through [web analytics](https://en.wikipedia.org/wiki/Web_analytics)
-* Harden the browser, so it doesn't spill it's guts when asked (have you seen what [BeEF](http://beefproject.com/) can do?)
+* Harden the browser, so it doesn't spill its guts when asked (have you seen what [BeEF](http://beefproject.com/) can do?)
 * Limit the browser from storing anything even remotely sensitive persistently (mostly just making sure [private browsing][8] is always on)
 * Make sure the browser doesn't reveal too much information to [shoulder surfers](https://en.wikipedia.org/wiki/Shoulder_surfing_%28computer_security%29)
 * Harden the browser's encryption (cipher suites, protocols, trusted CAs)
@@ -24,12 +24,116 @@ There are several parts to all this and they are:
 * Using the user.js settings file itself
 * Using the **cas.sh** script to limit the CAs
 
-How to use the user.js file
----------------------------
+----------------------------------------------
 
-Just drop the [user.js][1] file to your Firefox profile directory at ````~/.mozilla/firefox/XXXXXXXX.your_profile_name```` and verify that the settings are effective from [about:support](http://kb.mozillazine.org/Troubleshooting_Information_report#Modified_Preferences) (check the "Important Modified Preferences" and "user.js Preferences" sections).
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-If you want to be able to keep your [user.js][1] up-to-date with this repository, you can clone the latter in the main mozilla directory and create a link to the [user.js][1] file from your profile:
+  - [How to use the user.js file](#how-to-use-the-userjs-file)
+    - [Android](#android)
+    - [Windows](#windows)
+  - [What does it do?](#what-does-it-do)
+    - [HTML5 / APIs / DOM](#html5--apis--dom)
+    - [Miscellaneous](#miscellaneous)
+    - [Extensions / plugins related](#extensions--plugins-related)
+    - [Firefox features](#firefox-features)
+    - [Automatic connections](#automatic-connections)
+    - [HTTP](#http)
+    - [Caching](#caching)
+    - [UI related](#ui-related)
+    - [TLS / HTTPS / OCSP related](#tls--https--ocsp-related)
+    - [Ciphers](#ciphers)
+  - [This is not enough!](#this-is-not-enough)
+    - [Add-ons](#add-ons)
+      - [Tracking protection](#tracking-protection)
+      - [Add-ons for mobile platforms](#add-ons-for-mobile-platforms)
+  - [Online tests](#online-tests)
+    - [HTML5test](#html5test)
+  - [Known problems](#known-problems)
+  - [CAs](#cas)
+    - [Examples](#examples)
+      - [Check the current list of CAs in cert8.db](#check-the-current-list-of-cas-in-cert8db)
+      - [Import CAs](#import-cas)
+      - [Verify that it worked](#verify-that-it-worked)
+    - [The default list](#the-default-list)
+      - [How to use the default list](#how-to-use-the-default-list)
+  - [TODO](#todo)
+  - [Contributing](#contributing)
+  - [References](#references)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+----------------------------------------------
+
+
+
+
+# How to use the user.js file
+
+
+## Download
+
+
+Different download methods are available:
+
+ * Clone using git: `git clone https://github.com/pyllyukko/user.js`
+ * Download and extract the [ZIP file](https://github.com/pyllyukko/user.js/archive/master.zip) containing the latest version.
+ * Download the latest `user.js` [directly](https://raw.githubusercontent.com/pyllyukko/user.js/master/user.js)
+
+## Installation
+
+### Install for a single profile
+
+Copy `user.js` in your current user profile, or (recommended) to a fresh, newly created Firefox profile directory.
+
+The file should be located at:
+
+| OS                         | Path                                                                                                                                          |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Windows 7                  | `%APPDATA%\Mozilla\Firefox\Profiles\XXXXXXXX.your_profile_name\user.js`                                                                       |
+| Linux                      | `~/.mozilla/firefox/XXXXXXXX.your_profile_name/user.js`                                                                                       |
+| OS X                       | `~/Library/Application Support/Firefox/Profiles/XXXXXXXX.your_profile_name`                                                                   |
+| Android                    | `/data/data/org.mozilla.firefox/files/mozilla/XXXXXXXX.your_profile_name` and see [issue #14](https://github.com/pyllyukko/user.js/issues/14) |
+| Sailfish OS + Alien Dalvik | `/opt/alien/data/data/org.mozilla.firefox/files/mozilla/XXXXXXXX.your_profile_name`                                                           |
+| Windows (portable)         | `[firefox directory]\Data\profile\`                                       |
+
+Do note that these settings alter your browser behaviour quite a bit, so it is recommended to either create a completely new [profile][15] for Firefox or backup your existing profile directory before putting the ```user.js``` file in place.
+
+### Install system-wide
+
+Create `local-settings.js` in Firefox installation directory, with the following contents:
+
+```
+pref("general.config.obscure_value", 0);
+pref("general.config.filename", "mozilla.cfg");
+```
+
+This file should be located at:
+
+| OS      | Path                                                         |
+| ------- | ------------------------------------------------------------ |
+| Windows | `C:\Program Files (x86)\Mozilla Firefox\default\pref\`       |
+| Linux   |**This file is not required**                                 |
+| OS X    | `/Applications/Firefox.app/Contents/Resources/defaults/pref` |
+
+
+In `user.js`, Change `user_pref(` to  one of:
+ * `pref(` (the value will be used as default value on Firefox profile creation, it can be changed in `about:config`)
+ * `lockPref(` (the value will be used as default value on Firefox profile creation, will be locked and can't be changed) in `user.js` or in Firefox's `about:config` or settings.
+
+Copy `user.js` to the Firefox installation directory. The file should be located at:
+
+| OS             | Path                                                       |
+| -------------- | ---------------------------------------------------------- |
+| Windows        | `C:\Program Files (x86)\Mozilla Firefox\mozilla.cfg`       |
+| Linux          | `/etc/firefox/firefox.js`                                  |
+| Linux (Debian) | `/etc/firefox-esr/firefox-esr.js`                          |
+| OS X           | `/Applications/Firefox.app/Contents/Resources/mozilla.cfg` |
+
+### Updating using git
+
+For any of the above methods, you can keep your browser's `user.js` with the latest version available here: Clone the repository, and create a symoblic link from the appropriate location to the `user.js` file in the repository. Just run `git pull` in the repository when you want to update, then restart Firefox:
+
 ````
 cd ~/.mozilla/firefox
 git clone 'https://github.com/pyllyukko/user.js.git'
@@ -37,27 +141,11 @@ cd XXXXXXXX.your_profile_name
 ln -s ../user.js/user.js user.js
 ````
 
-Do note that these settings alter your browser behaviour quite a bit, so it is recommended to either create a completely new [profile][15] for Firefox or backup your existing profile directory before putting the ```user.js``` file in place.
+### Verifying
 
-Whenever you want to update your local copy of the repository, just use ````git pull```` and restart Firefox.
+Verify that the settings are effective from [about:support](http://kb.mozillazine.org/Troubleshooting_Information_report#Modified_Preferences) (check the "Important Modified Preferences" and "user.js Preferences" sections).
 
-### Android
-
-On [Firefox for Android](https://www.mozilla.org/en-US/firefox/android/) (Fennec), you need to drop the file to ```/data/data/org.mozilla.firefox/files/mozilla/XXXXXXXX.your_profile_name```. If you use Jolla and run Firefox through Alien Dalvik, the location needs to be prefixed with ```/opt/alien```.
-
-See [issue #14](https://github.com/pyllyukko/user.js/issues/14) for further details on using this ```user.js``` file with Firefox for Android.
-
-### Windows
-
-```
-cd %HOME%\%appdata%\Roaming\Mozilla\Firefox\Profiles\XXXXXXXX.myprofilename
-
-mklink /H user.js /path/to/user.js/user.js
-```
-
-On Windows, you need to drop the ```user.js``` file to ```%appdata%\Mozilla\Firefox\Profiles\XXXXXXXX.your_profile_name```.
-
-Apply any manual addon settings that don't load from user.js nor sync.
+--------------------------------------------
 
 What does it do?
 ----------------
@@ -99,7 +187,7 @@ Here are some of the "highlights" from each category. For a full list of setting
 
 It is common for [client side attacks](https://www.offensive-security.com/metasploit-unleashed/client-side-attacks/) to target [browser extensions][14], instead of the browser itself (just look at all those [Java](https://en.wikipedia.org/wiki/Criticism_of_Java#Security) and [Flash](http://www.cvedetails.com/vulnerability-list/vendor_id-53/product_id-6761/Adobe-Flash-Player.html) vulnerabilities). Make sure your extensions and plugins are always up-to-date.
 
-* Disable flash
+* Disable Adobe Flash
 * Enable [click to play](https://wiki.mozilla.org/Firefox/Click_To_Play)
 * Enable [add-on updates](https://blog.mozilla.org/addons/how-to-turn-off-add-on-updates/)
 
@@ -153,48 +241,38 @@ See also [#20](https://github.com/pyllyukko/user.js/issues/20).
 * Disable [TLS session tickets](https://www.blackhat.com/us-13/archives.html#NextGen)
 * Enforces [pinning](https://wiki.mozilla.org/SecurityEngineering/Public_Key_Pinning)
 
-
 ### Ciphers
 
 This section tweaks the cipher suites used by Firefox. The idea is to support only the strongest ones with emphasis on [forward secrecy](https://en.wikipedia.org/wiki/Forward_secrecy), but without compromising compatibility with all those sites on the internet. As new crypto related flaws are discovered quite often, the cipher suites can be [tweaked to mitigate these newly discovered threats](https://github.com/pyllyukko/user.js/pull/18).
 
-Here's a list of the ciphers with default config and Firefox 27.0.1:
+Here's a list of the ciphers with default config and Firefox 38.8.0 ESR:
 
-	Cipher Suites (23 suites)
-	    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 (0xc02b)
-	    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (0xc02f)
-	    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA (0xc00a)
-	    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA (0xc009)
-	    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (0xc013)
-	    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (0xc014)
-	    Cipher Suite: TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA (0xc012)
-	    Cipher Suite: TLS_ECDHE_ECDSA_WITH_RC4_128_SHA (0xc007)
-	    Cipher Suite: TLS_ECDHE_RSA_WITH_RC4_128_SHA (0xc011)
-	    Cipher Suite: TLS_DHE_RSA_WITH_AES_128_CBC_SHA (0x0033)
-	    Cipher Suite: TLS_DHE_DSS_WITH_AES_128_CBC_SHA (0x0032)
-	    Cipher Suite: TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA (0x0045)
-	    Cipher Suite: TLS_DHE_RSA_WITH_AES_256_CBC_SHA (0x0039)
-	    Cipher Suite: TLS_DHE_DSS_WITH_AES_256_CBC_SHA (0x0038)
-	    Cipher Suite: TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA (0x0088)
-	    Cipher Suite: TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA (0x0016)
-	    Cipher Suite: TLS_RSA_WITH_AES_128_CBC_SHA (0x002f)
-	    Cipher Suite: TLS_RSA_WITH_CAMELLIA_128_CBC_SHA (0x0041)
-	    Cipher Suite: TLS_RSA_WITH_AES_256_CBC_SHA (0x0035)
-	    Cipher Suite: TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (0x0084)
-	    Cipher Suite: TLS_RSA_WITH_3DES_EDE_CBC_SHA (0x000a)
-	    Cipher Suite: TLS_RSA_WITH_RC4_128_SHA (0x0005)
-	    Cipher Suite: TLS_RSA_WITH_RC4_128_MD5 (0x0004)
+```
+Cipher Suites (11 suites)
+    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 (0xc02b)
+    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (0xc02f)
+    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA (0xc00a)
+    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA (0xc009)
+    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA (0xc013)
+    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (0xc014)
+    Cipher Suite: TLS_DHE_RSA_WITH_AES_128_CBC_SHA (0x0033)
+    Cipher Suite: TLS_DHE_RSA_WITH_AES_256_CBC_SHA (0x0039)
+    Cipher Suite: TLS_RSA_WITH_AES_128_CBC_SHA (0x002f)
+    Cipher Suite: TLS_RSA_WITH_AES_256_CBC_SHA (0x0035)
+    Cipher Suite: TLS_RSA_WITH_3DES_EDE_CBC_SHA (0x000a)
+```
 
 Here's the list with this config:
 
-	Cipher Suites (8 suites)
-	    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 (0xc02b)
-	    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (0xc02f)
-	    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA (0xc00a)
-	    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (0xc014)
-	    Cipher Suite: TLS_RSA_WITH_AES_128_CBC_SHA (0x002f)
-	    Cipher Suite: TLS_RSA_WITH_AES_256_CBC_SHA (0x0035)
-
+```
+Cipher Suites (6 suites)
+    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 (0xc02b)
+    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (0xc02f)
+    Cipher Suite: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA (0xc00a)
+    Cipher Suite: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA (0xc014)
+    Cipher Suite: TLS_RSA_WITH_AES_128_CBC_SHA (0x002f)
+    Cipher Suite: TLS_RSA_WITH_AES_256_CBC_SHA (0x0035)
+```
 
 This is not enough!
 -------------------
@@ -204,6 +282,9 @@ Here's some other tips how you can further harden Firefox:
 * Keep your browser updated! If you check [Firefox's security advisories][10], you'll see that pretty much every new version of Firefox contains some security updates. If you don't keep your browser updated, you've already lost the game.
 * Disable all unnecessary extensions and plugins!
 * Create different [profiles][15] for different purposes
+* Change the Firefox's built-in tracking protection to use the [strict list](https://support.mozilla.org/en-US/kb/tracking-protection-pbm?as=u#w_change-your-block-list)
+* Change the timezone for Firefox by using the ```TZ``` environment variable (see [here](https://wiki.archlinux.org/index.php/Firefox_privacy#Change_browser_time_zone)) to reduce it's value in browser fingerprinting
+* Completely block unencrypted communications using the `HTTPS Everywhere` toolbar button > `Block all unencrypted requests`. This will break websites where HTTPS is not available.
 
 ### Add-ons
 
@@ -211,13 +292,15 @@ Here is a list of the most essential security and privacy enhancing add-ons that
 
 * [Certificate Patrol][4]
   * I recommend setting the 'Store certificates even when in [Private Browsing][8] Mode' to get full benefit out of certpatrol, even though it stores information about the sites you visit
-* [HTTPS Everywhere](https://www.eff.org/https-everywhere)
+* [HTTPS Everywhere](https://www.eff.org/https-everywhere) and [HTTPS by default](https://addons.mozilla.org/firefox/addon/https-by-default/)
 * [NoScript](http://noscript.net/)
-* [DuckDuckGo Plus](https://addons.mozilla.org/en-US/firefox/addon/duckduckgo-for-firefox/) (instead of Google)
+* [DuckDuckGo Plus](https://addons.mozilla.org/firefox/addon/duckduckgo-for-firefox/) (instead of Google)
+* [No Resource URI Leak](https://addons.mozilla.org/firefox/addon/no-resource-uri-leak/) (see [#163](https://github.com/pyllyukko/user.js/issues/163))
+* [Decentraleyes](https://addons.mozilla.org/firefox/addon/decentraleyes/)
 
 #### Tracking protection
 
-Tracking protection is one of the most important technologies that you need. The usual recommendation has been to run the [Ghostery](https://www.ghostery.com/) extension, but as it is made by a [potentially evim(tm) advertising company](https://en.wikipedia.org/wiki/Ghostery#Criticism), some people feel that is not to be trusted. One notable alternative is to use [uBlock](https://github.com/gorhill/uBlock), which can also be found at [Mozilla AMO](https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/).
+Tracking protection is one of the most important technologies that you need. The usual recommendation has been to run the [Ghostery](https://www.ghostery.com/) extension, but as it is made by a [potentially evim(tm) advertising company](https://en.wikipedia.org/wiki/Ghostery#Criticism), some people feel that is not to be trusted. One notable alternative is to use [uBlock](https://github.com/gorhill/uBlock), which can also be found at [Mozilla AMO](https://addons.mozilla.org/firefox/addon/ublock-origin/).
 
 Ghostery is still viable option, but be sure to disable the [GhostRank](https://www.ghostery.com/en/faq#q5-general) feature.
 
@@ -233,39 +316,45 @@ See also:
 * [Ghostery sneaks in new promotional messaging system #47](https://github.com/pyllyukko/user.js/issues/47)
 * [Are We Private Yet?](http://www.areweprivateyet.com/) site (made by Ghostery)
 * [Tracking Protection in Firefox For Privacy and Performance](https://kontaxis.github.io/trackingprotectionfirefox/#papers) paper
+* [How Tracking Protection works in Firefox](https://feeding.cloud.geek.nz/posts/how-tracking-protection-works-in-firefox/)
 
 #### Add-ons for mobile platforms
 
 * [NoScript Anywhere](https://noscript.net/nsa/)
-* [uBlock](https://addons.mozilla.org/en-US/android/addon/ublock-origin/)
+* [uBlock](https://addons.mozilla.org/android/addon/ublock-origin/)
 * [HTTPS Everywhere](https://www.eff.org/https-everywhere)
 
 Online tests
 ------------
 
 * [Panopticlick](https://panopticlick.eff.org/)
-* [www.filldisk.com](http://www.filldisk.com/)
+* [Filldisk](http://www.filldisk.com/)
 * [SSL Client Test](https://www.ssllabs.com/ssltest/viewMyClient.html)
-* [evercookie](http://samy.pl/evercookie/)
+* [Evercookie](http://samy.pl/evercookie/)
 * [Mozilla Plugin Check][14]
 * [BrowserSpy.dk](http://browserspy.dk/)
 * [Testing mixed content](https://people.mozilla.org/~tvyas/mixedcontent.html)
   * [Similar from Microsoft](https://ie.microsoft.com/testdrive/browser/mixedcontent/assets/woodgrove.htm)
 * [WebRTC stuff](http://mozilla.github.io/webrtc-landing/)
-* [Flash player version](https://www.adobe.com/software/flash/about/) from Adobe
+* [Flash Player Version](https://www.adobe.com/software/flash/about/) from Adobe
 * [Verify your installed Java Version](https://www.java.com/en/download/installed.jsp)
   * Protip: Don't use Oracle's Java!! But if you really need it, update it regulary!
-* [IP check](http://ip-check.info/?lang=en)
+* [IP Check](http://ip-check.info/?lang=en)
 * [Onion test for CORS and WebSocket](http://cure53.de/leak/onion.php)
 * [Firefox Addon Detector](http://thehackerblog.com/addon_scanner/)
   * [Blog post](http://thehackerblog.com/dirty-browser-enumeration-tricks-using-chrome-and-about-to-detect-firefox-plugins/)
-* [browserrecon](http://www.computec.ch/projekte/browserrecon/)??
 * [Official WebGL check](http://get.webgl.org/)
+* [AudioContext Fingerprint Test Page](https://audiofingerprint.openwpm.com/)
 * [battery.js](https://pstadler.sh/battery.js/)
-* [RC4 fallback test](https://rc4.io/)
 * [Battery API](https://robnyman.github.io/battery/)
 * [AmIUnique](https://amiunique.org/) ([Source](https://github.com/DIVERSIFY-project/amiunique))
-
+* itisatrap.org:
+  * [Test page for Firefox's built-in Tracking Protection](https://itisatrap.org/firefox/its-a-tracker.html)
+  * [Test page for Firefox's built-in Phishing Protection](http://itisatrap.org/firefox/its-a-trap.html) ("Web forgeries")
+  * [Test page for Firefox's built-in Malware Protection](http://itisatrap.org/firefox/its-an-attack.html) (attack page)
+  * [Test page for Firefox's built-in Malware Protection](http://itisatrap.org/firefox/unwanted.html) (unwanted software)
+* [Firefox Resources Reader - BrowserLeaks.com](https://www.browserleaks.com/firefox) (see [#163](https://github.com/pyllyukko/user.js/issues/163))
+* [SSL Checker | Symantec CryptoReport](https://cryptoreport.websecurity.symantec.com/checker/views/sslCheck.jsp)
 
 ### HTML5test
 
@@ -299,6 +388,8 @@ There are plenty! Hardening your browser will break your interwebs. Here's some 
 * The ```network.http.referer.spoofSource``` and ```network.http.sendRefererHeader``` settings seems to break the visualization of the 3rd party sites on the [Lightbeam][13] extension
 * You can not view or inspect cookies when in private browsing (see https://bugzil.la/823941)
 * Installation of ```user.js``` causes saved passwords to be removed from the Firefox (see [#27](https://github.com/pyllyukko/user.js/issues/27))
+* Some payment gateways require third-party cookies to be fully enabled before you can make purchases on sites that use them (`network.cookie.cookieBehavior == 0`). Enabling `network.cookie.thirdparty.sessionOnly` will limit their lifetime to the length of the session no matter what.
+* On some Android devices, all the pages might be blank (as seen [here](https://github.com/pyllyukko/user.js/pull/136#issuecomment-206812337)) if the setting ```layers.acceleration.disabled``` is set to ```true```. For more information, see [#136](https://github.com/pyllyukko/user.js/pull/136).
 
 The [web console](https://developer.mozilla.org/en-US/docs/Tools/Web_Console) is your friend, **when** websites start to break.
 
@@ -313,11 +404,13 @@ Then I came up with an better idea. I'd use [certpatrol][4] to record the certs 
 
 So I wrapped up a script that uses the certpatrol's SQLite DB and Mozilla's [certutil](https://developer.mozilla.org/en-US/docs/NSS_security_tools/certutil) to establish a list of required root CAs from the HTTPS sites that you have visited.
 
-There's also a ready made list built in into the script, that has 26 root CAs in it. With this list of CAs you should already be able to browse the web quite freely. Of course there might also be some geographical variations as to what CAs "are required" for normal use.
+There's also a ready made list built in into the script, that has 28 root CAs in it. With this list of CAs you should already be able to browse the web quite freely. Of course there might also be some geographical variations as to what CAs "are required" for normal use.
+
+This script requires that you have the CA certificates in ```/usr/share/ca-certificates/mozilla``` (see <https://packages.debian.org/search?keywords=ca-certificates>). Red Hat based systems have a different model for this, so the script doesn't currently work on those (see [#140](https://github.com/pyllyukko/user.js/issues/140)).
 
 ### Examples
 
-**Do note**, that in order for all this to work, you **MUST** remove or rename Firefox's default CA list that is stored inside *libnssckbi.so* as described [here][5].
+**Do note**, that in order for all this to work, you **MUST** remove or rename Firefox's default CA list that is stored inside ```libnssckbi.so``` as described [here][5].
 
 #### Check the current list of CAs in cert8.db
 
@@ -349,34 +442,36 @@ After you have run the script, verify from Firefox's [certificate settings](http
 
 This is the default CA list, that you can use. It should be enough for basic use for the most biggest/popular sites. Of course this still depends on where you are located and what sites/services/etc. you use. If you know some popular site, that is not accessible with this root CA list, please let me know and I'll consider adding it to the list.
 
-| Root CA							| Used by			|
+| Root CA                           | Used by           |
 | ------------------------------------------------------------- | ----------------------------- |
-| AddTrust External CA Root					| https://www.debian.org/	|
-| Baltimore CyberTrust Root					|				|
-| COMODO Certification Authority				|				|
-| Deutsche Telekom Root CA 2					|				|
-| DigiCert High Assurance EV Root CA				| https://www.facebook.com/	|
-| DigiCert Global Root CA					| https://duckduckgo.com/	|
-| Entrust.net Secure Server Certification Authority		|				|
-| Entrust.net Certification Authority (2048)			|				|
+| AddTrust External CA Root                 | https://www.debian.org/   |
+| Baltimore CyberTrust Root                 |               |
+| COMODO Certification Authority                |               |
+| Deutsche Telekom Root CA 2                    |               |
+| DigiCert High Assurance EV Root CA                | https://www.facebook.com/ |
+| DigiCert Global Root CA                   | https://duckduckgo.com/   |
+| Entrust.net Secure Server Certification Authority     |               |
+| Entrust.net Certification Authority (2048)            |               |
 | [Entrust Root Certification Authority][11]                    | https://www.ssllabs.com/      |
-| Equifax Secure Certificate Authority				|				|
-| GTE CyberTrust Global Root					|				|
-| GeoTrust Global CA						| https://www.google.com/	|
-| GeoTrust Primary Certification Authority			| https://www.robtex.com/	|
-| GlobalSign Root CA						| https://www.wikipedia.org/	|
-| Go Daddy Class 2 Certification Authority			|				|
-| Go Daddy Root Certificate Authority - G2			|				|
-| Starfield Class 2 Certification Authority			| https://tools.ietf.org/	|
-| StartCom Certification Authority				|				|
-| UTN-USERFirst-Hardware					|				|
-| ValiCert Class 2 Policy Validation Authority			|				|
-| VeriSign Class 3 Public Primary Certification Authority - G3	| https://www.mysql.com/	|
-| VeriSign Class 3 Public Primary Certification Authority - G5	| https://twitter.com/		|
-| [thawte Primary Root CA][7]					|				|
-| [thawte Primary Root CA - G3][7]				|				|
-| SecureTrust CA						|				|
-| QuoVadis Root CA 2						| https://supportforums.cisco.com/ |
+| Equifax Secure Certificate Authority              |               |
+| GTE CyberTrust Global Root                    |               |
+| GeoTrust Global CA                        | https://www.google.com/   |
+| GeoTrust Primary Certification Authority          | https://www.robtex.com/   |
+| GeoTrust Primary Certification Authority - G3         |               |
+| GlobalSign Root CA                        | https://www.wikipedia.org/    |
+| Go Daddy Class 2 Certification Authority          |               |
+| Go Daddy Root Certificate Authority - G2          |               |
+| Starfield Class 2 Certification Authority         | https://tools.ietf.org/   |
+| StartCom Certification Authority              |               |
+| UTN-USERFirst-Hardware                    |               |
+| ValiCert Class 2 Policy Validation Authority          |               |
+| VeriSign Class 3 Public Primary Certification Authority - G3  | https://www.mysql.com/    |
+| VeriSign Class 3 Public Primary Certification Authority - G5  | https://twitter.com/      |
+| [thawte Primary Root CA][7]                   |               |
+| [thawte Primary Root CA - G3][7]              |               |
+| SecureTrust CA                        |               |
+| QuoVadis Root CA 2                        | https://supportforums.cisco.com/ |
+| DST Root CA X3                        | [Let's Encrypt](https://letsencrypt.org/) |
 
 #### How to use the default list
 
@@ -397,9 +492,9 @@ TODO
   - [Tor fingerprinting topic](https://www.torproject.org/projects/torbrowser/design/#fingerprinting-linkability)
   - [Bug 967895](https://bugzilla.mozilla.org/show_bug.cgi?id=967895)
   - [Pixel Perfect: Fingerprinting Canvas in HTML5](http://www.w2spconf.com/2012/papers/w2sp12-final4.pdf)
-  - https://addons.mozilla.org/en-US/firefox/addon/canvasblocker/, https://github.com/kkapsner/CanvasBlocker/issues/
+  - https://addons.mozilla.org/firefox/addon/canvasblocker/, https://github.com/kkapsner/CanvasBlocker/issues/
+  - https://addons.mozilla.org/firefox/addon/anticanvasfingerprinting/
 - [ ] [Address Sanitizer](https://developer.mozilla.org/en-US/docs/Building_Firefox_with_Address_Sanitizer)
-- [ ] Send bogus timezone
 
 Contributing
 ------------
@@ -425,6 +520,8 @@ References
 * [Security and privacy-related preferences](http://kb.mozillazine.org/Category:Security_and_privacy-related_preferences)
 * [How to stop Firefox from making automatic connections](https://support.mozilla.org/en-US/kb/how-stop-firefox-making-automatic-connections)
 * [Diff between various Firefox .js configurations in upcoming releases](http://cat-in-136.github.io/)
+* [Mozilla Firefox Release Plan](https://wiki.mozilla.org/RapidRelease/Calendar)
+* [Advices from Mozilla Firefox on privacy and government surveillance](https://www.mozilla.org/en-US/teach/smarton/surveillance/)
 
 [1]: http://kb.mozillazine.org/User.js_file
 [2]: https://wiki.mozilla.org/Security:Renegotiation#security.ssl.require_safe_negotiation

@@ -59,6 +59,12 @@ user_pref("noscript.notify.bottom", false);
 // http://www.mozilla.org/en-US/firefox/geolocation/
 user_pref("geo.enabled",        false);
 
+// Disable dom.mozTCPSocket.enabled (raw TCP socket support)
+// https://trac.torproject.org/projects/tor/ticket/18863
+// https://www.mozilla.org/en-US/security/advisories/mfsa2015-97/
+// https://developer.mozilla.org/docs/Mozilla/B2G_OS/API/TCPSocket
+user_pref("dom.mozTCPSocket.enabled",          false);
+
 // [Handled by Self-Destructing Cookies - Clear a Site's LocalStorage along with Cookies]
 // http://kb.mozillazine.org/Dom.storage.enabled
 // http://dev.w3.org/html5/webstorage/#dom-localstorage
@@ -67,8 +73,10 @@ user_pref("geo.enabled",        false);
 
 // Don't reveal internal IPs
 // http://net.ipcalf.com/
+// Disable WebRTC entirely
 user_pref("media.peerconnection.enabled",       false);
-user_pref("media-peerconnection.ice.default_address_only",      true);
+user_pref("media.peerconnection.ice.default_address_only",  true); // Firefox < 51
+user_pref("media.peerconnection.ice.no_host",        true); // Firefox >= 51
 // getUserMedia
 // https://wiki.mozilla.org/Media/getUserMedia
 // https://developer.mozilla.org/en-US/docs/Web/API/Navigator
@@ -83,6 +91,10 @@ user_pref("beacon.enabled",     false);
 user_pref("dom.event.clipboardevents.enabled",      false);
 // https://wiki.mozilla.org/Security/Reviews/Firefox/NavigationTimingAPI
 user_pref("dom.enable_performance",     false);
+
+// disable Web Audio API
+// https://bugzil.la/1288359
+user_pref("dom.webaudio.enabled",            false);
 
 // 2503: disable giving away network info
    // eg bluetooth, cellular, ethernet, wifi, wimax, other, mixed, unknown, none
@@ -187,6 +199,8 @@ user_pref("webgl.disabled",     true);
 user_pref("webgl.min_capability_mode", true);
 user_pref("webgl.disable-extensions", true);
 user_pref("webgl.disable-fail-if-major-performance-caveat", true);
+// https://bugzilla.mozilla.org/show_bug.cgi?id=1171228
+user_pref("webgl.enable-debug-renderer-info",        false);
 // somewhat related...
 user_pref("pdfjs.enableWebGL",      false);
 
@@ -257,11 +271,6 @@ user_pref("browser.urlbar.filter.javascript",       true);
 
 // display all parts of the url
 user_pref("browser.urlbar.trimURLs", false);
-
-// Disable HTML frames
-// WARNING: might make your life difficult!
-// NOTE: to be removed(?) see: https://bugzilla.mozilla.org/show_bug.cgi?id=729030
-//user_pref("browser.frames.enabled",       false);
 
 // [Pre-Firefox-38 vulnerability]
 // http://asmjs.org/
@@ -534,8 +543,6 @@ user_pref("privacy.donottrackheader.enabled",     false);
 // no information is leaked in the referer header anyway.
 //user_pref("network.http.sendRefererHeader",     1);
 user_pref("network.http.referer.spoofSource",       true);
-// CIS Version 1.2.0 October 21st, 2011 2.4.3 Disable Referer from an SSL Website
-user_pref("network.http.sendSecureXSiteReferrer",       false);
 
 // CIS 2.5.1 Accept Only 1st Party Cookies
 // http://kb.mozillazine.org/Network.cookie.cookieBehavior#1
