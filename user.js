@@ -189,6 +189,9 @@ user_pref("webgl.enable-debug-renderer-info",			false);
  * SECTION: Misc                                                              *
  ******************************************************************************/
 
+/// Tweaked - additional - youtube auto play
+user_pref("media.block-play-until-visible", false);
+
 // PREF: Disable face detection
 user_pref("camera.control.face_detection.enabled",		false);
 
@@ -196,7 +199,7 @@ user_pref("camera.control.face_detection.enabled",		false);
 // https://support.mozilla.org/en-US/questions/948134
 //user_pref("browser.search.defaultenginename",		"DuckDuckGo");
 //user_pref("browser.search.order.1",				"DuckDuckGo");
-//user_pref("keyword.URL", 							"https://duckduckgo.com/html/?q=!+");  
+//user_pref("keyword.URL", 							"https://duckduckgo.com/html/?q=!+");
 
 // PREF: Disable GeoIP lookup on your address to set default search engine region
 // https://trac.torproject.org/projects/tor/ticket/16254
@@ -265,7 +268,7 @@ user_pref("security.mixed_content.block_active_content",	true);
 
 // PREF: Disable JAR from opening Unsafe File Types
 // http://kb.mozillazine.org/Network.jar.open-unsafe-types
-// CIS Mozilla Firefox 24 ESR v1.0.0 - 3.7 
+// CIS Mozilla Firefox 24 ESR v1.0.0 - 3.7
 user_pref("network.jar.open-unsafe-types",			false);
 
 // CIS 2.7.4 Disable Scripting of Plugins by JavaScript
@@ -279,7 +282,7 @@ user_pref("security.fileuri.strict_origin_policy",		true);
 
 // PREF: Disable Displaying Javascript in History URLs
 // http://kb.mozillazine.org/Browser.urlbar.filter.javascript
-// CIS 2.3.6 
+// CIS 2.3.6
 user_pref("browser.urlbar.filter.javascript",			true);
 
 // PREF: Disable asm.js
@@ -572,7 +575,8 @@ user_pref("extensions.pocket.enabled",				false);
 // PREF: Disable prefetching of <link rel="next"> URLs
 // http://kb.mozillazine.org/Network.prefetch-next
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Link_prefetching_FAQ#Is_there_a_preference_to_disable_link_prefetching.3F
-user_pref("network.prefetch-next",				false);
+/// Tweaked
+user_pref("network.prefetch-next",				true);
 
 // PREF: Disable DNS prefetching
 // http://kb.mozillazine.org/Network.dns.disablePrefetch
@@ -709,10 +713,14 @@ user_pref("browser.cache.offline.enable",			false);
 // NOTICE: Clearing open windows on Firefox exit causes 2 windows to open when Firefox starts https://bugzilla.mozilla.org/show_bug.cgi?id=1334945
 user_pref("privacy.sanitize.sanitizeOnShutdown",		true);
 user_pref("privacy.clearOnShutdown.cache",			true);
-//user_pref("privacy.clearOnShutdown.cookies",			true);
-user_pref("privacy.clearOnShutdown.downloads",			true);
-user_pref("privacy.clearOnShutdown.formdata",			true);
-user_pref("privacy.clearOnShutdown.history",			true);
+/// Tweaked
+user_pref("privacy.clearOnShutdown.cookies",			true);
+/// Tweaked
+user_pref("privacy.clearOnShutdown.downloads",			false);
+/// Tweaked
+user_pref("privacy.clearOnShutdown.formdata",			false);
+/// Tweaked
+user_pref("privacy.clearOnShutdown.history",			false);
 user_pref("privacy.clearOnShutdown.offlineApps",		true);
 //user_pref("privacy.clearOnShutdown.passwords",			true);
 user_pref("privacy.clearOnShutdown.sessions",			true);
@@ -725,9 +733,11 @@ user_pref("privacy.sanitize.timeSpan",				0);
 user_pref("privacy.cpd.offlineApps",				true);
 user_pref("privacy.cpd.cache",					true);
 user_pref("privacy.cpd.cookies",				true);
-user_pref("privacy.cpd.downloads",				true);
+/// Tweaked
+user_pref("privacy.cpd.downloads",				false);
 user_pref("privacy.cpd.formdata",				true);
-user_pref("privacy.cpd.history",				true);
+/// Tweaked
+user_pref("privacy.cpd.history",				false);
 user_pref("privacy.cpd.sessions",				true);
 
 // PREF: Don't remember browsing history
@@ -735,7 +745,8 @@ user_pref("places.history.enabled",				false);
 
 // PREF: Disable disk cache
 // http://kb.mozillazine.org/Browser.cache.disk.enable
-user_pref("browser.cache.disk.enable",				false);
+/// Tweaked
+user_pref("browser.cache.disk.enable",				true);
 
 // PREF: Disable memory cache (disabled)
 // http://kb.mozillazine.org/Browser.cache.memory.enable
@@ -744,11 +755,13 @@ user_pref("browser.cache.disk.enable",				false);
 // PREF: Disable Caching of SSL Pages
 // CIS Version 1.2.0 October 21st, 2011 2.5.8
 // http://kb.mozillazine.org/Browser.cache.disk_cache_ssl
-user_pref("browser.cache.disk_cache_ssl",			false);
+/// Tweaked
+user_pref("browser.cache.disk_cache_ssl",			true);
 
 // PREF: Disable download history
 // CIS Version 1.2.0 October 21st, 2011 2.5.5
-user_pref("browser.download.manager.retention",			0);
+/// Tweaked
+user_pref("browser.download.manager.retention",			1);
 
 // PREF: Disable password manager (disabled)
 // NOTICE: Make sure to set a Master password to protect Firefox's password storage against basic malware that could extract your password information
@@ -763,7 +776,8 @@ user_pref("browser.formfill.enable",				false);
 //user_pref("network.cookie.lifetimePolicy",			2);
 
 // PREF: The cookie's lifetime is supplied by the server
-user_pref("network.cookie.lifetimePolicy",			0);
+/// Tweaked
+user_pref("network.cookie.lifetimePolicy",			2);
 
 // PREF: Require manual intervention to autofill known username/passwords sign-in forms
 // http://kb.mozillazine.org/Signon.autofillForms
