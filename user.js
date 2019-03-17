@@ -82,6 +82,15 @@ user_pref("privacy.firstparty.isolate",           true);
 user_pref("media.navigator.enabled",                false);  // device status
 user_pref("dom.event.clipboardevents.enabled", false);
 
+user_pref("media.eme.enabled", false);
+user_pref("media.gmp-widevinecdm.enabled", false);
+
+
+user_pref("browser.safebrowsing.malware.enabled", false);
+user_pref("browser.safebrowsing.phishing.enabled", false);
+
+user_pref("network.IDN_show_punycode ", true);
+
 /// Safer versions of "network.http.referer.spoofSource"
 // Send only the scheme, host, and port in the Referer header
 user_pref("network.http.referer.trimmingPolicy", 2);
